@@ -16,6 +16,8 @@ function Player() {
 
 var player1 = new Player();
 var player2 = new Player();
+var player1Score = 0;
+var player2Score = 0;
 
 var activePlayer = player1;
 
@@ -50,7 +52,6 @@ Player.prototype.turnScore = function (lastRoll) {
   if (lastRoll != 1) {
     // this.gameTurn === true
     this.turnRolls += lastRoll;
-    console.log("running");
   }
   else {
     this.turnRolls = 0;
@@ -78,12 +79,20 @@ $(document).ready(function() {
     $("#turn-score").append ('<p class = "turn-score">' + '<span class =  "score-display">' + 'Round Score: ' + '</span>' + activePlayer.turnRolls + "</p>" );
 
 
-    console.log(activePlayer.turnRolls);
 
   });
-  // $(".btn-hold").click(function () {
-  //
-  //   var playerScore =
-  //
-  // });
+  $(".btn-hold").click(function () {
+
+    if (activePlayer === player1) {
+      player1Score += activePlayer.turnRolls;
+      $("#player1-score").append ('<div class = "score-display">' + 'Total score: ' + player1Score + "</div>" );
+
+    }
+    else {
+      player2Score += activePlayer.turnRolls;
+      $("#player2-score").append ('<div class = "score-display">' + 'Total score: ' + player2Score + "</div>" );
+    }
+
+     swap();
+  });
 });
