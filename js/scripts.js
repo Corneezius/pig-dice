@@ -56,6 +56,8 @@ Player.prototype.turnScore = function (lastRoll) {
     this.turnRolls = 0;
     swap();
   }
+  var rollTotal = this.turnRolls;
+  return rollTotal;
 }
 
 
@@ -65,11 +67,23 @@ $(document).ready(function() {
   $(".btn-roll").click(function (){
     $("p").remove();
     var diceRoll = activePlayer.playerTurn();
-    $("#score").append ('<p class = "score">' + diceRoll + "</p>" );
+     if (activePlayer === player1) {
+       $("#player").append('<p class="player"> Player 1 turn</p>');
+     }
+     else {
+       $("#player").append('<p class="player"> Player 2 turn</p>');
+     }
 
+    $("#score").append ('<p class = "score">' + diceRoll + "</p>" );
+    $("#turn-score").append ('<p class = "turn-score">' + '<span class =  "score-display">' + 'Round Score: ' + '</span>' + activePlayer.turnRolls + "</p>" );
 
 
     console.log(activePlayer.turnRolls);
 
   });
+  // $(".btn-hold").click(function () {
+  //
+  //   var playerScore =
+  //
+  // });
 });
