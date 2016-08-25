@@ -1,8 +1,7 @@
 //Business Logic
-function Player(roll, score, turn) {
-  this.turnRolls = roll;
-  this.gameScore = score;
-  this.gameTurn = true;
+function Player() {
+  this.turnRolls = 0;
+  this.gameScore = 0;
 }
 
 //
@@ -15,16 +14,47 @@ function Player(roll, score, turn) {
 //   }
 // }
 
-var player1 = new Player(0,0,true);
-var player2 = new Player(0,0,false);
-var roll = function() { var current = Math.ceil(Math.random() * 6); return current; }
+var player1 = new Player();
+var player2 = new Player();
 
-Player.prototype.turnScore = function (lastRoll) {
-  if (lastRoll != 1 && this.gameTurn === true) {
-    this.turnRolls += lastRoll;
+var activePlayer = player1;
+
+var roll = function() {
+  var current = Math.ceil(Math.random() * 6);
+  return current;
+}
+
+function swap () {
+  if (activePlayer === player1) {
+    activePlayer = player2;
   }
   else {
-    gameTurn = false;
+    activePlayer = player1;
+  }
+}
+
+Player.prototype.playerTurn = function () {
+  var lastRoll = roll();
+  if (activePlayer === player1) {
+
+    player1.turnScore(lastRoll);
+  }
+  else {
+    player2.turnScore(lastRoll);
+  }
+  return lastRoll;
+}
+
+
+Player.prototype.turnScore = function (lastRoll) {
+  if (lastRoll != 1) {
+    // this.gameTurn === true
+    this.turnRolls += lastRoll;
+    console.log("running");
+  }
+  else {
+    this.turnRolls = 0;
+    swap();
   }
 }
 
@@ -34,13 +64,12 @@ Player.prototype.turnScore = function (lastRoll) {
 $(document).ready(function() {
   $(".btn-roll").click(function (){
     $("p").remove();
-    var lastRoll = roll();
-    $("#score").append ('<p class = "score">' + lastRoll + "</p>" );
+    var diceRoll = activePlayer.playerTurn();
+    $("#score").append ('<p class = "score">' + diceRoll + "</p>" );
 
 
-    player1.turnScore(lastRoll)
 
+    console.log(activePlayer.turnRolls);
 
-    console.log(player1.turnRolls);
   });
 });
